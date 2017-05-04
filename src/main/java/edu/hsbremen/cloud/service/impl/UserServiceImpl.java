@@ -47,8 +47,11 @@ public class UserServiceImpl implements UserService {
 
     @PostConstruct
     public void init() {
-        UserEntity adminEntity = UserEntity.fromRegisterUserDto(new RegisterUserDto("admin", "admin", "admin@admin.com"));
-        adminEntity.setAuthorities(Lists.newArrayList(RoleEntity.fromSecurityRole(SecurityConfig.Roles.ROLE_USER)));
-        userRepository.save(adminEntity);
+        // TODO: Remove add user
+        if (findUser("admin") == null) {
+            UserEntity adminEntity = UserEntity.fromRegisterUserDto(new RegisterUserDto("admin", "admin", "admin@admin.com"));
+            adminEntity.setAuthorities(Lists.newArrayList(RoleEntity.fromSecurityRole(SecurityConfig.Roles.ROLE_USER)));
+            userRepository.save(adminEntity);
+        }
     }
 }

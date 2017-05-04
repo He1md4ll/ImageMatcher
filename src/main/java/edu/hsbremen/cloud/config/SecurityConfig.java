@@ -49,17 +49,20 @@ public class SecurityConfig{
 
         @Override
         public void configure(WebSecurity web) throws Exception {
+            // Ignore swagger and configuration paths for discovery
             web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources",
                     "/configuration/security", "/swagger-ui.html", "/webjars/**", "/v2/swagger.json");
         }
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
+            // TODO: Change to form authentication
             http
                     //.formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").and()
                     .httpBasic().and().authorizeRequests()
-                    .antMatchers("/api/**").hasRole(Roles.USER)
-                    .antMatchers("/admin/**").hasAnyRole(Roles.ADMIN, Roles.USER)
+                    .antMatchers("/api/**").hasAnyRole(Roles.ANONYMOUS, Roles.USER, Roles.ADMIN)
+                    .antMatchers("/api/client/**").hasAnyRole(Roles.USER, Roles.ADMIN)
+                    .antMatchers("/api/admin/**").hasAnyRole(Roles.ADMIN)
                     .antMatchers("/**").denyAll()
                     .and().csrf().disable()
                     .anonymous().authorities(Roles.ROLE_ANONYMOUS);
