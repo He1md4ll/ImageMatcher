@@ -1,5 +1,6 @@
 package edu.hsbremen.cloud.api;
 
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +18,10 @@ public class HelloWorldService {
     @RequestMapping("/client")
     public String sayHelloToUser(Principal principal) {
         return "Hello " + principal.getName() + " !!";
+    }
+
+    @RequestMapping("/client/error")
+    public String sayHelloError() {
+        throw  new AccessDeniedException("Restricted Area");
     }
 }

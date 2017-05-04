@@ -60,9 +60,9 @@ public class SecurityConfig{
             http
                     //.formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").and()
                     .httpBasic().and().authorizeRequests()
-                    .antMatchers("/api/**").hasAnyRole(Roles.ANONYMOUS, Roles.USER, Roles.ADMIN)
+                    .antMatchers("/api/admin/**").hasRole(Roles.ADMIN)
                     .antMatchers("/api/client/**").hasAnyRole(Roles.USER, Roles.ADMIN)
-                    .antMatchers("/api/admin/**").hasAnyRole(Roles.ADMIN)
+                    .antMatchers("/api/**").hasAnyRole(Roles.ANONYMOUS, Roles.USER, Roles.ADMIN)
                     .antMatchers("/**").denyAll()
                     .and().csrf().disable()
                     .anonymous().authorities(Roles.ROLE_ANONYMOUS);
