@@ -96,8 +96,14 @@
         </dependency>
         <dependency>
             <groupId>com.google.firebase</groupId>
-            <artifactId>firebase-server-sdk</artifactId>
-            <version>3.0.3</version>
+            <artifactId>firebase-admin</artifactId>
+            <version>4.1.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+			</exclusions>
         </dependency>
 
         <dependency>

@@ -16,4 +16,10 @@ public class ExceptionHandlerController {
     public @ResponseBody ErrorDto handleAccessDeniedException(AccessDeniedException e) {
         return new ErrorDto("ERROR_ACCESS_DENIED", e.getMessage());
     }
+
+    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @ExceptionHandler(FirebaseTokenInvalidException.class)
+    public @ResponseBody ErrorDto handleFirebaseTokenInvalid(FirebaseTokenInvalidException e) {
+        return new ErrorDto("ERROR_TOKEN_INVALID", e.getMessage());
+    }
 }

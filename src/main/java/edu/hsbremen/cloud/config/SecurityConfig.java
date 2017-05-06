@@ -1,5 +1,9 @@
 package edu.hsbremen.cloud.config;
 
+import edu.hsbremen.cloud.exception.ExceptionEntryPoint;
+import edu.hsbremen.cloud.firebase.config.authentication.FirebaseAuthenticationFilter;
+import edu.hsbremen.cloud.firebase.config.authentication.FirebaseAuthenticationProvider;
+import edu.hsbremen.cloud.firebase.service.FirebaseAuthenticationService;
 import edu.hsbremen.cloud.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +18,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig{
@@ -37,15 +43,27 @@ public class SecurityConfig{
         @Qualifier(value = UserServiceImpl.NAME)
         private UserDetailsService userService;
 
+        @Autowired
+        private FirebaseAuthenticationProvider firebaseAuthenticationProvider;
+
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
             auth.userDetailsService(userService);
+            auth.authenticationProvider(firebaseAuthenticationProvider);
         }
     }
 
     @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
     @Configuration
     protected static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        private FirebaseAuthenticationService firebaseAuthenticationService;
+        private AuthenticationEntryPoint entryPoint  = new ExceptionEntryPoint();
+
+        private FirebaseAuthenticationFilter getFirebaseAuthenticationFilter() {
+            return new FirebaseAuthenticationFilter(firebaseAuthenticationService, entryPoint);
+        }
 
         @Override
         public void configure(WebSecurity web) throws Exception {
@@ -56,16 +74,16 @@ public class SecurityConfig{
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            // TODO: Change to form authentication
+            // TODO: Disable session????
             http
-                    //.formLogin().loginPage("/login").usernameParameter("username").passwordParameter("password").and()
-                    .httpBasic().and().authorizeRequests()
+                    .addFilterBefore(getFirebaseAuthenticationFilter(), BasicAuthenticationFilter.class).authorizeRequests()
                     .antMatchers("/api/admin/**").hasRole(Roles.ADMIN)
                     .antMatchers("/api/client/**").hasAnyRole(Roles.USER, Roles.ADMIN)
                     .antMatchers("/api/**").hasAnyRole(Roles.ANONYMOUS, Roles.USER, Roles.ADMIN)
                     .antMatchers("/**").denyAll()
                     .and().csrf().disable()
-                    .anonymous().authorities(Roles.ROLE_ANONYMOUS);
+                    .anonymous().authorities(Roles.ROLE_ANONYMOUS)
+                    .and().exceptionHandling().authenticationEntryPoint(entryPoint);
         }
     }
 }
