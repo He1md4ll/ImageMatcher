@@ -1,7 +1,7 @@
 package edu.hsbremen.cloud.api;
 
 import edu.hsbremen.cloud.dto.UserDto;
-import edu.hsbremen.cloud.facade.IUserFacade;
+import edu.hsbremen.cloud.facade.IApiFacade;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserApi {
 
     @Autowired
-    private IUserFacade userFacade;
+    private IApiFacade userFacade;
 
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public UserDto createUser(@RequestHeader String token) {

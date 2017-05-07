@@ -1,9 +1,7 @@
 package edu.hsbremen.cloud.persistance.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class ImageEntity {
@@ -17,6 +15,9 @@ public class ImageEntity {
 
     @Column(nullable = false)
     private String url;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<UserEntity> users;
 
     public ImageEntity() {
     }
@@ -35,5 +36,13 @@ public class ImageEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
     }
 }
