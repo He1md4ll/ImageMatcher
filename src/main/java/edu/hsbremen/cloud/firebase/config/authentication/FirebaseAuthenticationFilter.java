@@ -2,7 +2,7 @@ package edu.hsbremen.cloud.firebase.config.authentication;
 
 import com.google.common.base.Preconditions;
 import com.google.firebase.auth.FirebaseToken;
-import edu.hsbremen.cloud.firebase.service.FirebaseAuthenticationService;
+import edu.hsbremen.cloud.firebase.service.IFirebaseAuthenticationService;
 import io.netty.util.internal.StringUtil;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,10 +19,10 @@ import java.io.IOException;
 public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTH_HEADER = "X-Authorization-Firebase";
-    private FirebaseAuthenticationService firebaseAuthenticationService;
+    private IFirebaseAuthenticationService firebaseAuthenticationService;
     private AuthenticationEntryPoint entryPoint;
 
-    public FirebaseAuthenticationFilter(FirebaseAuthenticationService firebaseAuthenticationService, AuthenticationEntryPoint entryPoint) {
+    public FirebaseAuthenticationFilter(IFirebaseAuthenticationService firebaseAuthenticationService, AuthenticationEntryPoint entryPoint) {
         Preconditions.checkNotNull(firebaseAuthenticationService);
         Preconditions.checkNotNull(entryPoint);
         this.entryPoint = entryPoint;

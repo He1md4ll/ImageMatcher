@@ -21,7 +21,7 @@ public class UserEntity implements UserDetails {
     private String username;
 
     @Column(nullable = false)
-    private String password;
+    private String altName;
 
     @Column(nullable = false)
     @Email
@@ -35,9 +35,9 @@ public class UserEntity implements UserDetails {
 
     public static UserEntity fromRegisterUserDto(final RegisterUserDto registerUserDto) {
         final UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(registerUserDto.getUsername());
-        userEntity.setPassword(registerUserDto.getPassword());
-        userEntity.setEmail(registerUserDto.getEMail());
+        userEntity.setUsername(registerUserDto.getUid());
+        userEntity.setAltName(registerUserDto.getName());
+        userEntity.setEmail(registerUserDto.geteMail());
         return userEntity;
     }
 
@@ -50,13 +50,17 @@ public class UserEntity implements UserDetails {
         this.authorities = authorities;
     }
 
-    @Override
-    public String getPassword() {
-        return password;
+    public String getAltName() {
+        return altName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAltName(String altName) {
+        this.altName = altName;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
     }
 
     @Override

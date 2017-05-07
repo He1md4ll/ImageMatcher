@@ -6,7 +6,7 @@ import edu.hsbremen.cloud.dto.RegisterUserDto;
 import edu.hsbremen.cloud.persistance.UserRepository;
 import edu.hsbremen.cloud.persistance.domain.RoleEntity;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
-import edu.hsbremen.cloud.service.UserService;
+import edu.hsbremen.cloud.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,20 +14,17 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@Service(UserServiceImpl.NAME)
-public class UserServiceImpl implements UserService {
+@Service
+public class UserService implements IUserService {
 
-    public static final String NAME = "UserService";
-    private UserRepository userRepository;
+    public static final String NAME = "IUserService";
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     @Override
     public UserEntity registerUser(RegisterUserDto registerUserDto) {
-        UserEntity userEntity = findUser(registerUserDto.getUsername());
+        UserEntity userEntity = findUser(registerUserDto.getUid());
         if (userEntity == null) {
             userEntity = UserEntity.fromRegisterUserDto(registerUserDto);
             userEntity.setAuthorities(Lists.newArrayList(RoleEntity.fromSecurityRole(SecurityConfig.Roles.ROLE_USER)));

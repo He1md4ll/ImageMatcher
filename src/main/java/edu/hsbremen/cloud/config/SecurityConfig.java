@@ -3,10 +3,9 @@ package edu.hsbremen.cloud.config;
 import edu.hsbremen.cloud.exception.ExceptionEntryPoint;
 import edu.hsbremen.cloud.firebase.config.authentication.FirebaseAuthenticationFilter;
 import edu.hsbremen.cloud.firebase.config.authentication.FirebaseAuthenticationProvider;
-import edu.hsbremen.cloud.firebase.service.FirebaseAuthenticationService;
-import edu.hsbremen.cloud.service.impl.UserServiceImpl;
+import edu.hsbremen.cloud.firebase.service.IFirebaseAuthenticationService;
+import edu.hsbremen.cloud.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -17,11 +16,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig{
 
     public static class Roles {
@@ -40,8 +38,7 @@ public class SecurityConfig{
     protected static class AuthenticationSecurity extends GlobalAuthenticationConfigurerAdapter {
 
         @Autowired
-        @Qualifier(value = UserServiceImpl.NAME)
-        private UserDetailsService userService;
+        private IUserService userService;
 
         @Autowired
         private FirebaseAuthenticationProvider firebaseAuthenticationProvider;
@@ -58,7 +55,7 @@ public class SecurityConfig{
     protected static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
         @Autowired
-        private FirebaseAuthenticationService firebaseAuthenticationService;
+        private IFirebaseAuthenticationService firebaseAuthenticationService;
         private AuthenticationEntryPoint entryPoint  = new ExceptionEntryPoint();
 
         private FirebaseAuthenticationFilter getFirebaseAuthenticationFilter() {

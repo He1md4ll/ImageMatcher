@@ -1,10 +1,8 @@
 package edu.hsbremen.cloud.firebase.config.authentication;
 
 import edu.hsbremen.cloud.exception.FirebaseUserInvalidException;
-import edu.hsbremen.cloud.service.UserService;
-import edu.hsbremen.cloud.service.impl.UserServiceImpl;
+import edu.hsbremen.cloud.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,8 +13,7 @@ import org.springframework.stereotype.Component;
 public class FirebaseAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    @Qualifier(UserServiceImpl.NAME)
-    private UserService userService;
+    private IUserService userService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

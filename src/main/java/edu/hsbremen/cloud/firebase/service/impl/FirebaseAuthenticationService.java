@@ -6,12 +6,12 @@ import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.tasks.Task;
 import com.google.firebase.tasks.Tasks;
 import edu.hsbremen.cloud.exception.FirebaseTokenInvalidException;
-import edu.hsbremen.cloud.firebase.service.FirebaseAuthenticationService;
+import edu.hsbremen.cloud.firebase.service.IFirebaseAuthenticationService;
 import io.netty.util.internal.StringUtil;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FirebaseAuthenticationServiceImpl implements FirebaseAuthenticationService {
+public class FirebaseAuthenticationService implements IFirebaseAuthenticationService {
 
     @Override
     public FirebaseToken verify(String tokenID) {
