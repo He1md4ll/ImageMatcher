@@ -8,7 +8,6 @@ import edu.hsbremen.cloud.persistance.domain.RoleEntity;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
 import edu.hsbremen.cloud.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,6 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class UserService implements IUserService {
-
-    public static final String NAME = "IUserService";
 
     @Autowired
     private UserRepository userRepository;
@@ -34,7 +31,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
         return findUser(username);
     }
 
