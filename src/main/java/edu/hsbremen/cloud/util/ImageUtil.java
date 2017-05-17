@@ -31,4 +31,14 @@ public class ImageUtil {
         }
         return imageHolderOptional;
     }
+
+    public static byte[] loadImage(String url) {
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            Thumbnails.of(url).toOutputStream(outputStream);
+        } catch (IOException e) {
+            LOGGER.error("Could not load image from '" + url + "' !", e);
+        }
+        return outputStream.toByteArray();
+    }
 }
