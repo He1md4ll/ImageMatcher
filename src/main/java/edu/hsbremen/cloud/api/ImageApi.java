@@ -5,6 +5,8 @@ import edu.hsbremen.cloud.dto.ImageHolder;
 import edu.hsbremen.cloud.exception.ImageUploadFailedException;
 import edu.hsbremen.cloud.facade.impl.ApiFacade;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +25,8 @@ import java.util.List;
 @PreAuthorize("hasRole('ROLE_USER')")
 public class ImageApi {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageApi.class);
+
     @Autowired
     private ApiFacade apiFacade;
 
@@ -38,7 +42,7 @@ public class ImageApi {
             final ImageHolder imageHolder = new ImageHolder(multipartFile.getName(), multipartFile.getBytes());
             return apiFacade.saveImage(imageHolder, userEntity);
         } catch (IOException e) {
-            // TODO: Add logging
+            LOGGER.error("Could not parse image " + multipartFile.getName(), e);
             throw new ImageUploadFailedException(e);
         }
     }
