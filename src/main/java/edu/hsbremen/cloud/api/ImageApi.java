@@ -1,9 +1,10 @@
 package edu.hsbremen.cloud.api;
 
+import edu.hsbremen.cloud.dto.ComparsionDto;
 import edu.hsbremen.cloud.dto.ImageDto;
 import edu.hsbremen.cloud.dto.ImageHolder;
 import edu.hsbremen.cloud.exception.ImageUploadFailedException;
-import edu.hsbremen.cloud.facade.impl.ApiFacade;
+import edu.hsbremen.cloud.facade.IApiFacade;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class ImageApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageApi.class);
 
     @Autowired
-    private ApiFacade apiFacade;
+    private IApiFacade apiFacade;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<ImageDto> getAllImages(@AuthenticationPrincipal UserEntity userEntity) {
@@ -45,5 +46,11 @@ public class ImageApi {
             LOGGER.error("Could not parse image " + multipartFile.getName(), e);
             throw new ImageUploadFailedException(e);
         }
+    }
+
+    public List<ComparsionDto> compareImage(@AuthenticationPrincipal UserEntity userEntity,
+                                            @RequestParam("name") String imageName) {
+        // TODO: Add support for async non-blocking call (annotation vs DifferedResult vs Callable)
+        return apiFacade.compare(imageName, userEntity);
     }
 }

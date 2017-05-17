@@ -3,11 +3,9 @@ package edu.hsbremen.cloud.facade.impl;
 import autovalue.shaded.com.google.common.common.base.Function;
 import autovalue.shaded.com.google.common.common.collect.Lists;
 import com.google.firebase.auth.FirebaseToken;
-import edu.hsbremen.cloud.dto.ImageDto;
-import edu.hsbremen.cloud.dto.ImageHolder;
-import edu.hsbremen.cloud.dto.RegisterUserDto;
-import edu.hsbremen.cloud.dto.UserDto;
+import edu.hsbremen.cloud.dto.*;
 import edu.hsbremen.cloud.facade.IApiFacade;
+import edu.hsbremen.cloud.facade.IComparisonFacade;
 import edu.hsbremen.cloud.firebase.service.IFirebaseAuthenticationService;
 import edu.hsbremen.cloud.persistance.domain.ImageEntity;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
@@ -22,6 +20,9 @@ import java.util.List;
 
 @Component
 public class ApiFacade implements IApiFacade {
+
+    @Autowired
+    private IComparisonFacade comparisonFacade;
 
     @Autowired
     private IUserService userService;
@@ -59,5 +60,12 @@ public class ApiFacade implements IApiFacade {
     @Override
     public ImageDto saveImage(ImageHolder imageHolder, UserEntity userEntity) {
         return ImageDto.fromImageEntity(imageService.saveImage(imageHolder, userEntity));
+    }
+
+    @Override
+    public List<ComparsionDto> compare(String imageName, UserEntity userEntity) {
+        final ImageDto referneceImage = ImageDto.fromImageEntity(imageService.getImage(imageName));
+        final List<ImageDto> imageDtoList = getImages(userEntity);
+        return comparisonFacade.compareImages(referneceImage, imageDtoList);
     }
 }

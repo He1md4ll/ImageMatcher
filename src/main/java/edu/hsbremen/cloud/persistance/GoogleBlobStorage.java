@@ -18,7 +18,7 @@ public class GoogleBlobStorage implements IBlobStorage {
     private String bucketName;
 
     @PostConstruct
-    private void init() {;
+    private void init() {
         googleBlobStorage = StorageOptions.getDefaultInstance().getService();
         aclReadAccess = Lists.newArrayList(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER));
     }

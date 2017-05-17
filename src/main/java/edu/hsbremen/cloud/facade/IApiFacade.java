@@ -1,5 +1,6 @@
 package edu.hsbremen.cloud.facade;
 
+import edu.hsbremen.cloud.dto.ComparsionDto;
 import edu.hsbremen.cloud.dto.ImageDto;
 import edu.hsbremen.cloud.dto.ImageHolder;
 import edu.hsbremen.cloud.dto.UserDto;
@@ -11,4 +12,5 @@ public interface IApiFacade {
     UserDto createUser(String token);
     List<ImageDto> getImages(UserEntity userEntity);
     ImageDto saveImage(ImageHolder imageHolder, UserEntity userEntity);
+    List<ComparsionDto> compare(String imageName, UserEntity userEntity);
 }

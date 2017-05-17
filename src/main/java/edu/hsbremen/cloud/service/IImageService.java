@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface IImageService {
     List<ImageEntity> getAllImages();
+    ImageEntity getImage(String imageName);
     List<ImageEntity> getAllImagesOfUser(UserEntity userEntity);
     ImageEntity saveImage(ImageHolder imageHolder, UserEntity userEntity);
 }

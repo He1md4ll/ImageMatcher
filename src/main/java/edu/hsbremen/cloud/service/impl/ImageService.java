@@ -28,6 +28,11 @@ public class ImageService implements IImageService {
     }
 
     @Override
+    public ImageEntity getImage(String imageName) {
+        return imageRepository.findByName(imageName);
+    }
+
+    @Override
     public List<ImageEntity> getAllImagesOfUser(UserEntity userEntity) {
         return imageRepository.findByUser(userEntity);
     }

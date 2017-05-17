@@ -24,4 +24,8 @@ public class ImageDto {
     public String getUrl() {
         return url;
     }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
 }
