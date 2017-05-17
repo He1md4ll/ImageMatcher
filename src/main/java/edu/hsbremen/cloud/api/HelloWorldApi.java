@@ -1,6 +1,5 @@
 package edu.hsbremen.cloud.api;
 
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +16,7 @@ public class HelloWorldApi {
     }
 
     @RequestMapping("/client")
-    @PostAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String sayHelloToUser(Principal principal) {
         return "Hello " + principal.getName() + " !!";
     }

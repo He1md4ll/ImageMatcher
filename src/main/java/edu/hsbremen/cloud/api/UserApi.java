@@ -4,6 +4,7 @@ import edu.hsbremen.cloud.dto.UserDto;
 import edu.hsbremen.cloud.facade.IApiFacade;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class UserApi {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDto getCurrentUser(@AuthenticationPrincipal UserEntity userEntity) {
         return UserDto.fromUserEntity(userEntity);
     }

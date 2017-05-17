@@ -30,7 +30,8 @@ public class FirebaseAuthenticationProvider implements AuthenticationProvider {
     }
 
     @Override
-    public boolean supports(Class<?> aClass) {
-        return false;
+    public boolean supports(Class<?> auth) {
+        // Check if auth is of type FirebaseAuthenticationToken
+        return FirebaseAuthenticationToken.class.isAssignableFrom(auth.getClass());
     }
 }

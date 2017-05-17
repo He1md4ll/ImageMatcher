@@ -19,7 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig{
 
     public static class Roles {
@@ -72,10 +72,9 @@ public class SecurityConfig{
         @Override
         public void configure(HttpSecurity http) throws Exception {
             // TODO: Disable session????
+            // Info: Access to api is configured via PreAuthorize and PostAuthorize
             http
                     .addFilterBefore(getFirebaseAuthenticationFilter(), BasicAuthenticationFilter.class).authorizeRequests()
-                    .antMatchers("/api/admin/**").hasRole(Roles.ADMIN)
-                    .antMatchers("/api/client/**").hasAnyRole(Roles.USER, Roles.ADMIN)
                     .antMatchers("/api/**").hasAnyRole(Roles.ANONYMOUS, Roles.USER, Roles.ADMIN)
                     .antMatchers("/**").denyAll()
                     .and().csrf().disable()

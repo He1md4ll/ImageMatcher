@@ -7,14 +7,10 @@ import edu.hsbremen.cloud.persistance.ImageRepository;
 import edu.hsbremen.cloud.persistance.domain.ImageEntity;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
 import edu.hsbremen.cloud.service.IImageService;
-import net.coobird.thumbnailator.Thumbnails;
+import edu.hsbremen.cloud.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +36,7 @@ public class ImageService implements IImageService {
     public ImageEntity saveImage(ImageHolder imageHolder, UserEntity userEntity) {
         Optional<String> thumbnailURLOptional = Optional.empty();
         final String imageURL = blobStorage.saveImage(imageHolder);
-        final Optional<ImageHolder> optional = createThumbnail(imageHolder);
+        final Optional<ImageHolder> optional = ImageUtil.createThumbnail(imageHolder);
         if(optional.isPresent()) {
             thumbnailURLOptional = Optional.of(blobStorage.saveImage(optional.get()));
         }
@@ -52,22 +48,5 @@ public class ImageService implements IImageService {
         imageEntity.setThumbnailUrl(thumbnailURLOptional.orElse(null));
         imageRepository.save(imageEntity);
         return imageEntity;
-    }
-
-    private Optional<ImageHolder> createThumbnail(@NotNull final ImageHolder imageHolder) {
-        Optional<ImageHolder> imageHolderOptional = Optional.empty();
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            Thumbnails.of(new ByteArrayInputStream(imageHolder.getImageBytes()))
-                    .size(160, 160)
-                    .outputQuality(0.5)
-                    .toOutputStream(outputStream);
-            imageHolderOptional = Optional.of(new ImageHolder("thumbnail-"
-                    + imageHolder.getImageName(), outputStream.toByteArray()));
-        } catch (IOException e) {
-            //TODO: Add Logging
-            e.printStackTrace();
-        }
-        return imageHolderOptional;
     }
 }

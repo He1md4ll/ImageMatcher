@@ -22,7 +22,7 @@ public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
         Preconditions.checkNotNull(principal);
         Preconditions.checkNotNull(authorities);
         this.principal = principal;
-        setAuthenticated(Boolean.TRUE);
+        super.setAuthenticated(Boolean.TRUE);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public void setAuthenticated(boolean authenticated) {
         Preconditions.checkArgument(!authenticated, "Manipulation of authentication flag prohibited !!");
-        super.setAuthenticated(false);
+        super.setAuthenticated(Boolean.FALSE);
     }
 }
