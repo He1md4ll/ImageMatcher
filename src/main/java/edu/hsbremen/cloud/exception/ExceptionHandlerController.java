@@ -22,4 +22,10 @@ public class ExceptionHandlerController {
     public @ResponseBody ErrorDto handleFirebaseTokenInvalid(FirebaseTokenInvalidException e) {
         return new ErrorDto("ERROR_TOKEN_INVALID", e.getMessage());
     }
+
+    @ResponseStatus(code = HttpStatus.PAYMENT_REQUIRED)
+    @ExceptionHandler(ImageUploadFailedException.class)
+    public @ResponseBody ErrorDto handleImageUploadFailed(ImageUploadFailedException e) {
+        return new ErrorDto("ERROR_UPLOAD_FAILED", e.getMessage());
+    }
 }

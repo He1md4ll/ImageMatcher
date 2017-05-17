@@ -1,7 +1,6 @@
 package edu.hsbremen.cloud.persistance.domain;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class ImageEntity {
@@ -16,10 +15,21 @@ public class ImageEntity {
     @Column(nullable = false)
     private String url;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<UserEntity> users;
+    @Column
+    private String thumbnailUrl;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private UserEntity user;
 
     public ImageEntity() {
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getName() {
@@ -38,11 +48,11 @@ public class ImageEntity {
         this.url = url;
     }
 
-    public List<UserEntity> getUsers() {
-        return users;
+    public UserEntity getUser() {
+        return user;
     }
 
-    public void setUsers(List<UserEntity> users) {
-        this.users = users;
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 }

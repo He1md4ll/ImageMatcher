@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface ImageRepository extends CrudRepository<ImageEntity, Long> {
-    List<ImageEntity> findByUsers(UserEntity user);
+    List<ImageEntity> findByUser(UserEntity user);
 }

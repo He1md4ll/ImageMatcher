@@ -4,6 +4,7 @@ import autovalue.shaded.com.google.common.common.base.Function;
 import autovalue.shaded.com.google.common.common.collect.Lists;
 import com.google.firebase.auth.FirebaseToken;
 import edu.hsbremen.cloud.dto.ImageDto;
+import edu.hsbremen.cloud.dto.ImageHolder;
 import edu.hsbremen.cloud.dto.RegisterUserDto;
 import edu.hsbremen.cloud.dto.UserDto;
 import edu.hsbremen.cloud.facade.IApiFacade;
@@ -53,5 +54,10 @@ public class ApiFacade implements IApiFacade {
                 }
             }
         });
+    }
+
+    @Override
+    public ImageDto saveImage(ImageHolder imageHolder, UserEntity userEntity) {
+        return ImageDto.fromImageEntity(imageService.saveImage(imageHolder, userEntity));
     }
 }

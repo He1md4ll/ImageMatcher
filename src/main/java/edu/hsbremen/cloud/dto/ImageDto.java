@@ -5,14 +5,16 @@ import edu.hsbremen.cloud.persistance.domain.ImageEntity;
 public class ImageDto {
     private String name;
     private String url;
+    private String thumbnailUrl;
 
-    public ImageDto(String name, String url) {
+    public ImageDto(String name, String url, String thumbnailUrl) {
         this.name = name;
         this.url = url;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public static ImageDto fromImageEntity(ImageEntity imageEntity) {
-        return new ImageDto(imageEntity.getName(), imageEntity.getUrl());
+        return new ImageDto(imageEntity.getName(), imageEntity.getUrl(), imageEntity.getThumbnailUrl());
     }
 
     public String getName() {
