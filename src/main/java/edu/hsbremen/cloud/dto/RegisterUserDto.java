@@ -2,6 +2,8 @@ package edu.hsbremen.cloud.dto;
 
 import com.google.firebase.auth.FirebaseToken;
 
+import java.util.Optional;
+
 public class RegisterUserDto {
     private String uid;
     private String name;
@@ -14,7 +16,9 @@ public class RegisterUserDto {
     }
 
     public static RegisterUserDto fromFirebaseToken(FirebaseToken firebaseToken) {
-        return new RegisterUserDto(firebaseToken.getUid(), firebaseToken.getName(), firebaseToken.getEmail());
+        return new RegisterUserDto(firebaseToken.getUid(),
+                Optional.ofNullable(firebaseToken.getName()).orElse(firebaseToken.getUid()),
+                firebaseToken.getEmail());
     }
 
     public String getUid() {
