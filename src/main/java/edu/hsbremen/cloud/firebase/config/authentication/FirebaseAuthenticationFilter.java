@@ -16,14 +16,12 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FirebaseAuthenticationFilter.class);
     private static final String AUTH_HEADER = "X-Authorization-Firebase";
-    private static final String SESSION_AUTH_ATTR = "FIREBASE_AUTH";
     private IFirebaseAuthenticationService firebaseAuthenticationService;
     private AuthenticationEntryPoint entryPoint;
 
@@ -38,22 +36,13 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         final String token = httpServletRequest.getHeader(AUTH_HEADER);
         if (StringUtil.isNullOrEmpty(token)) {
+            LOGGER.info("No token found. Skipping firebase authentication.");
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             try {
-                Authentication auth;
-                //TODO: Deal with firebase token expiration
-                final HttpSession session = httpServletRequest.getSession();
-                final Object sessionAuth = session.getAttribute(SESSION_AUTH_ATTR);
-                if (!session.isNew() && sessionAuth != null) {
-                    LOGGER.info("Using authentication from persisted valid session.");
-                    auth = (Authentication) sessionAuth;
-                } else {
-                    LOGGER.info("No auth in session. Processing firebase token authentication.");
-                    final FirebaseToken firebaseToken = firebaseAuthenticationService.verify(token);
-                    auth = new FirebaseAuthenticationToken(firebaseToken.getUid());
-                    session.setAttribute(SESSION_AUTH_ATTR, auth);
-                }
+                LOGGER.info("Found token. Processing firebase token authentication.");
+                final FirebaseToken firebaseToken = firebaseAuthenticationService.verify(token);
+                final Authentication auth = new FirebaseAuthenticationToken(firebaseToken.getUid());
                 SecurityContextHolder.getContext().setAuthentication(auth);
                 filterChain.doFilter(httpServletRequest, httpServletResponse);
             } catch (AuthenticationException e) {

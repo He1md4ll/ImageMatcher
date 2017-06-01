@@ -1,5 +1,8 @@
 package edu.hsbremen.cloud.persistance.domain;
 
+import edu.hsbremen.cloud.dto.BlobDto;
+import edu.hsbremen.cloud.persistance.converter.BlobToStringConverter;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,24 +15,26 @@ public class ImageEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String url;
+    @Column(nullable = false, length = 1024)
+    @Convert(converter = BlobToStringConverter.class)
+    private BlobDto imageBlob;
 
-    @Column
-    private String thumbnailUrl;
+    @Column(length = 1024)
+    @Convert(converter = BlobToStringConverter.class)
+    private BlobDto thumbnailBlob;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private UserEntity user;
 
     public ImageEntity() {
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public BlobDto getThumbnailBlob() {
+        return thumbnailBlob;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setThumbnailBlob(BlobDto thumbnailBlob) {
+        this.thumbnailBlob = thumbnailBlob;
     }
 
     public String getName() {
@@ -40,12 +45,12 @@ public class ImageEntity {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public BlobDto getImageBlob() {
+        return imageBlob;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImageBlob(BlobDto imageBlob) {
+        this.imageBlob = imageBlob;
     }
 
     public UserEntity getUser() {

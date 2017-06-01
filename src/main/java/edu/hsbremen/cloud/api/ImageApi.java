@@ -36,11 +36,11 @@ public class ImageApi {
         return apiFacade.getImages(userEntity);
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ImageDto uploadImage(@AuthenticationPrincipal UserEntity userEntity,
                                       @RequestParam("file") MultipartFile multipartFile) throws ImageUploadFailedException {
         try {
-            final ImageHolder imageHolder = new ImageHolder(multipartFile.getName(), multipartFile.getBytes());
+            final ImageHolder imageHolder = new ImageHolder(multipartFile.getOriginalFilename(), multipartFile.getBytes());
             return apiFacade.saveImage(imageHolder, userEntity);
         } catch (IOException e) {
             LOGGER.error("Could not parse image " + multipartFile.getName(), e);

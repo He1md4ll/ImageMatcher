@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
@@ -71,15 +72,16 @@ public class SecurityConfig{
 
         @Override
         public void configure(HttpSecurity http) throws Exception {
-            // TODO: Disable session????
             // Info: Access to api is configured via PreAuthorize and PostAuthorize
+            // Info: Session management disabled for stateless rest api (authentication is very fast because of JWT)
             http
                     .addFilterBefore(getFirebaseAuthenticationFilter(), BasicAuthenticationFilter.class).authorizeRequests()
                     .antMatchers("/api/**").hasAnyRole(Roles.ANONYMOUS, Roles.USER, Roles.ADMIN)
                     .antMatchers("/**").denyAll()
                     .and().csrf().disable()
                     .anonymous().authorities(Roles.ROLE_ANONYMOUS)
-                    .and().exceptionHandling().authenticationEntryPoint(entryPoint);
+                    .and().exceptionHandling().authenticationEntryPoint(entryPoint)
+                    .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).disable();
         }
     }
 }

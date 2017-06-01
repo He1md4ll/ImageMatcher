@@ -1,6 +1,7 @@
 package edu.hsbremen.cloud.service.impl;
 
 import autovalue.shaded.com.google.common.common.collect.Lists;
+import edu.hsbremen.cloud.dto.BlobDto;
 import edu.hsbremen.cloud.dto.ImageHolder;
 import edu.hsbremen.cloud.persistance.IBlobStorage;
 import edu.hsbremen.cloud.persistance.ImageRepository;
@@ -39,18 +40,18 @@ public class ImageService implements IImageService {
 
     @Override
     public ImageEntity saveImage(ImageHolder imageHolder, UserEntity userEntity) {
-        Optional<String> thumbnailURLOptional = Optional.empty();
-        final String imageURL = blobStorage.saveImage(imageHolder);
+        Optional<BlobDto> thumbnailBlobOptional = Optional.empty();
+        final BlobDto imageBlob = blobStorage.saveImage(imageHolder);
         final Optional<ImageHolder> optional = ImageUtil.createThumbnail(imageHolder);
         if(optional.isPresent()) {
-            thumbnailURLOptional = Optional.of(blobStorage.saveImage(optional.get()));
+            thumbnailBlobOptional = Optional.of(blobStorage.saveImage(optional.get()));
         }
 
         final ImageEntity imageEntity = new ImageEntity();
         imageEntity.setName(imageHolder.getImageName());
         imageEntity.setUser(userEntity);
-        imageEntity.setUrl(imageURL);
-        imageEntity.setThumbnailUrl(thumbnailURLOptional.orElse(null));
+        imageEntity.setImageBlob(imageBlob);
+        imageEntity.setThumbnailBlob(thumbnailBlobOptional.orElse(null));
         imageRepository.save(imageEntity);
         return imageEntity;
     }

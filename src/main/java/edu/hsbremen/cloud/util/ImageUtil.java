@@ -23,8 +23,8 @@ public class ImageUtil {
                     .size(160, 160)
                     .outputQuality(0.5)
                     .toOutputStream(outputStream);
-            imageHolderOptional = Optional.of(new ImageHolder("thumbnail-"
-                    + imageHolder.getImageName(), outputStream.toByteArray()));
+            imageHolderOptional = Optional.of(new ImageHolder(
+                    imageHolder.getImageName() + "-thumbnail", outputStream.toByteArray()));
         } catch (IOException e) {
             LOGGER.warn("Could not create thumbnail for image " +
                     imageHolder.getImageName() + "! Continuing without thumbnail.", e);
