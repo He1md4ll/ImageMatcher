@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 
 public class ImageUtil {
@@ -32,12 +33,14 @@ public class ImageUtil {
         return imageHolderOptional;
     }
 
-    public static byte[] loadImage(String url) {
+    public static byte[] loadImage(String urlString) {
+
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            Thumbnails.of(url).toOutputStream(outputStream);
+            final URL url = new URL(urlString);
+            Thumbnails.of(url).scale(1).toOutputStream(outputStream);
         } catch (IOException e) {
-            LOGGER.error("Could not load image from '" + url + "' !", e);
+            LOGGER.error("Could not load image from '" + urlString + "' !", e);
         }
         return outputStream.toByteArray();
     }

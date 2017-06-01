@@ -11,6 +11,7 @@ import edu.hsbremen.cloud.persistance.domain.ImageEntity;
 import edu.hsbremen.cloud.persistance.domain.UserEntity;
 import edu.hsbremen.cloud.service.IImageService;
 import edu.hsbremen.cloud.service.IUserService;
+import edu.hsbremen.cloud.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -59,6 +60,12 @@ public class ApiFacade implements IApiFacade {
 
     @Override
     public ImageDto saveImage(ImageHolder imageHolder, UserEntity userEntity) {
+        return ImageDto.fromImageEntity(imageService.saveImage(imageHolder, userEntity));
+    }
+
+    @Override
+    public ImageDto saveImage(String imageName, String imageUrl, UserEntity userEntity) {
+        final ImageHolder imageHolder = new ImageHolder(imageName, ImageUtil.loadImage(imageUrl));
         return ImageDto.fromImageEntity(imageService.saveImage(imageHolder, userEntity));
     }
 

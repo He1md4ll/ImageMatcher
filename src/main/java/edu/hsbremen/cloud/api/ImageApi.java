@@ -36,9 +36,15 @@ public class ImageApi {
         return apiFacade.getImages(userEntity);
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public ImageDto uploadImage(@AuthenticationPrincipal UserEntity userEntity,
+                                      @RequestParam("name") String imageName, @RequestParam("url") String imageUrl) {
+            return apiFacade.saveImage(imageName, imageUrl, userEntity);
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ImageDto uploadImage(@AuthenticationPrincipal UserEntity userEntity,
-                                      @RequestParam("file") MultipartFile multipartFile) throws ImageUploadFailedException {
+                                @RequestParam("file") MultipartFile multipartFile) throws ImageUploadFailedException {
         try {
             final ImageHolder imageHolder = new ImageHolder(multipartFile.getOriginalFilename(), multipartFile.getBytes());
             return apiFacade.saveImage(imageHolder, userEntity);

@@ -12,5 +12,6 @@ public interface IApiFacade {
     UserDto createUser(String token);
     List<ImageDto> getImages(UserEntity userEntity);
     ImageDto saveImage(ImageHolder imageHolder, UserEntity userEntity);
+    ImageDto saveImage(String imageName, String imageUrl, UserEntity userEntity);
     List<ComparsionDto> compare(String imageName, UserEntity userEntity);
 }
