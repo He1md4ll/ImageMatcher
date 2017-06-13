@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -76,6 +77,7 @@ public class SecurityConfig{
             // Info: Session management disabled for stateless rest api (authentication is very fast because of JWT)
             http
                     .addFilterBefore(getFirebaseAuthenticationFilter(), BasicAuthenticationFilter.class).authorizeRequests()
+                    .antMatchers(HttpMethod.OPTIONS,"/api/**").permitAll()
                     .antMatchers("/api/**").hasAnyRole(Roles.ANONYMOUS, Roles.USER, Roles.ADMIN)
                     .antMatchers("/**").denyAll()
                     .and().csrf().disable()

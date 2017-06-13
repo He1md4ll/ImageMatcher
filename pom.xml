@@ -123,6 +123,12 @@
             <artifactId>thumbnailator</artifactId>
             <version>[0.4, 0.5)</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.boofcv</groupId>
+            <artifactId>core</artifactId>
+            <version>0.26</version>
+        </dependency>
     </dependencies>
 
 	<build>

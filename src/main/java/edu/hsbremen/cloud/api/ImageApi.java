@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -54,8 +51,9 @@ public class ImageApi {
         }
     }
 
+    @RequestMapping(value = "/compare/{name}", method = RequestMethod.GET)
     public List<ComparsionDto> compareImage(@AuthenticationPrincipal UserEntity userEntity,
-                                            @RequestParam("name") String imageName) {
+                                            @PathVariable("name") String imageName) {
         // TODO: Add support for async non-blocking call (annotation vs DifferedResult vs Callable)
         return apiFacade.compare(imageName, userEntity);
     }

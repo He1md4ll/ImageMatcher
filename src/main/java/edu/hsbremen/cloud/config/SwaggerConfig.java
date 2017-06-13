@@ -21,7 +21,7 @@ public class SwaggerConfig {
                 .paths(PathSelectors.regex("/api.*"))
                 .build()
                 .forCodeGeneration(Boolean.TRUE)
-                .securitySchemes(Lists.newArrayList(new ApiKey("Firebase-Token", "Firebase-Token", "header")))
+                .securitySchemes(Lists.newArrayList(new ApiKey("Firebase-Token", "X-Authorization-Firebase", "header")))
                 .useDefaultResponseMessages(Boolean.TRUE);
     }
 }
