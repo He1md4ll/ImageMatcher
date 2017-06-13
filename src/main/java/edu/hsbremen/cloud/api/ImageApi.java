@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/image", produces = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin
 @PreAuthorize("hasRole('ROLE_USER')")
 public class ImageApi {
 
@@ -28,17 +29,20 @@ public class ImageApi {
     @Autowired
     private IApiFacade apiFacade;
 
+    @CrossOrigin
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public List<ImageDto> getAllImages(@AuthenticationPrincipal UserEntity userEntity) {
         return apiFacade.getImages(userEntity);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/", method = RequestMethod.PUT)
     public ImageDto uploadImage(@AuthenticationPrincipal UserEntity userEntity,
                                       @RequestParam("name") String imageName, @RequestParam("url") String imageUrl) {
             return apiFacade.saveImage(imageName, imageUrl, userEntity);
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ImageDto uploadImage(@AuthenticationPrincipal UserEntity userEntity,
                                 @RequestParam("file") MultipartFile multipartFile) throws ImageUploadFailedException {
@@ -51,6 +55,7 @@ public class ImageApi {
         }
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/compare/{name}", method = RequestMethod.GET)
     public List<ComparsionDto> compareImage(@AuthenticationPrincipal UserEntity userEntity,
                                             @PathVariable("name") String imageName) {
