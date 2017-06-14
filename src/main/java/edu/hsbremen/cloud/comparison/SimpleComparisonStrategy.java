@@ -20,12 +20,13 @@ import java.util.List;
 
 public class SimpleComparisonStrategy implements IComparisonStrategy {
 
+    private DetectDescribePoint detDesc;
 
     @Override
     public Integer compare(byte[] imageReference, byte[] imageCompared) {
         try {
             Class imageType = GrayF32.class;
-            DetectDescribePoint detDesc = FactoryDetectDescribe.
+            detDesc = FactoryDetectDescribe.
                     surfStable(new ConfigFastHessian(1, 2, 300, 1, 9, 4, 4), null,null, imageType);
     //				sift(new ConfigCompleteSift(0,5,600));
 
@@ -44,8 +45,8 @@ public class SimpleComparisonStrategy implements IComparisonStrategy {
             FastQueue<TupleDesc> descB = UtilFeature.createQueue(detDesc,100);
 
             // describe each image using interest points
-            //describeImage(inputA,pointsA,descA);
-            //describeImage(inputB,pointsB,descB);
+            describeImage(imageA,pointsA,descA);
+            describeImage(imageB,pointsB,descB);
 
             // Associate features between the two images
             associate.setSource(descA);
@@ -61,13 +62,11 @@ public class SimpleComparisonStrategy implements IComparisonStrategy {
     /**
      * Detects features inside the two images and computes descriptions at those points.
      */
-    /*private void describeImage(T input, List<Point2D_F64> points, FastQueue<TupleDesc> descs )
-    {
+    private void describeImage(GrayF32 input, List<Point2D_F64> points, FastQueue<TupleDesc> descs ) {
         detDesc.detect(input);
-
         for( int i = 0; i < detDesc.getNumberOfFeatures(); i++ ) {
             points.add( detDesc.getLocation(i).copy() );
             descs.grow().setTo(detDesc.getDescription(i));
         }
-    }*/
+    }
 }
