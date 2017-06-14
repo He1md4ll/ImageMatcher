@@ -12,7 +12,7 @@ public class ComparisonStrategyContext {
         this.comparisonStrategy = comparisonStrategy;
     }
 
-    public Integer compare(byte[] imageReference, byte[] imageCompared) {
+    public Double compare(byte[] imageReference, byte[] imageCompared) {
         Preconditions.checkNotNull(comparisonStrategy, "Set strategy first!");
         return comparisonStrategy.compare(imageReference, imageCompared);
     }

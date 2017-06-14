@@ -14,16 +14,17 @@ import georegression.struct.point.Point2D_F64;
 import org.ddogleg.struct.FastQueue;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleComparisonStrategy implements IComparisonStrategy {
+public class InterestPointsComparisonStrategy implements IComparisonStrategy {
 
     private DetectDescribePoint detDesc;
 
     @Override
-    public Integer compare(byte[] imageReference, byte[] imageCompared) {
+    public Double compare(byte[] imageReference, byte[] imageCompared) {
         try {
             Class imageType = GrayF32.class;
             detDesc = FactoryDetectDescribe.
@@ -33,8 +34,10 @@ public class SimpleComparisonStrategy implements IComparisonStrategy {
             ScoreAssociation scorer = FactoryAssociation.defaultScore(detDesc.getDescriptionType());
             AssociateDescription associate = FactoryAssociation.greedy(scorer, Double.MAX_VALUE, true);
 
-            GrayF32 imageA = ConvertBufferedImage.convertFrom(ImageIO.read(new ByteArrayInputStream(imageReference)), (GrayF32) null);
-            GrayF32 imageB = ConvertBufferedImage.convertFrom(ImageIO.read(new ByteArrayInputStream(imageCompared)), (GrayF32) null);
+            BufferedImage bufferedImageA = ImageIO.read(new ByteArrayInputStream(imageReference));
+            BufferedImage bufferedImageB = ImageIO.read(new ByteArrayInputStream(imageCompared));
+            GrayF32 imageA = ConvertBufferedImage.convertFrom(bufferedImageA, (GrayF32) null);
+            GrayF32 imageB = ConvertBufferedImage.convertFrom(bufferedImageB, (GrayF32) null);
 
             // stores the location of detected interest points
             List<Point2D_F64> pointsA = new ArrayList<>();
@@ -52,7 +55,7 @@ public class SimpleComparisonStrategy implements IComparisonStrategy {
             associate.setSource(descA);
             associate.setDestination(descB);
             associate.associate();
-
+            return (double) associate.getMatches().getSize() / descB.getSize();
         } catch (Exception e) {
             e.printStackTrace();
         }

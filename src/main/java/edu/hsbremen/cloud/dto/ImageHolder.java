@@ -11,6 +11,7 @@ public class ImageHolder {
     public ImageHolder(@NotNull String imageName,@NotNull byte[] imageBytes) {
         Preconditions.checkNotNull(imageName);
         Preconditions.checkNotNull(imageBytes);
+        Preconditions.checkArgument(imageBytes.length > 0, "Could not load image!");
         this.imageName = imageName;
         this.imageBytes = imageBytes;
     }

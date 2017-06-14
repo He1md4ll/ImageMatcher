@@ -14,7 +14,9 @@ public class ImageDto {
     }
 
     public static ImageDto fromImageEntity(ImageEntity imageEntity) {
-        return new ImageDto(imageEntity.getName(), imageEntity.getImageBlob().getPublicLink(), imageEntity.getThumbnailBlob().getPublicLink());
+        final String thumbnailLink = imageEntity.getThumbnailBlob() != null
+                ? imageEntity.getThumbnailBlob().getPublicLink() : "";
+        return new ImageDto(imageEntity.getName(), imageEntity.getImageBlob().getPublicLink(), thumbnailLink);
     }
 
     public String getName() {
