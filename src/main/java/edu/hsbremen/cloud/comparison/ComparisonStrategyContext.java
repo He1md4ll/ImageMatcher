@@ -1,6 +1,7 @@
 package edu.hsbremen.cloud.comparison;
 
 import com.google.common.base.Preconditions;
+import edu.hsbremen.cloud.comparison.strats.IComparisonStrategy;
 import org.springframework.stereotype.Component;
 
 @Component

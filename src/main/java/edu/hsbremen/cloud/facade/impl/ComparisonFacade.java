@@ -2,7 +2,7 @@ package edu.hsbremen.cloud.facade.impl;
 
 import autovalue.shaded.com.google.common.common.collect.Lists;
 import edu.hsbremen.cloud.comparison.ComparisonStrategyContext;
-import edu.hsbremen.cloud.comparison.InterestPointsComparisonStrategy;
+import edu.hsbremen.cloud.comparison.strats.InterestPointsComparisonStrategy;
 import edu.hsbremen.cloud.dto.ComparsionDto;
 import edu.hsbremen.cloud.dto.ImageDto;
 import edu.hsbremen.cloud.facade.IComparisonFacade;
@@ -18,10 +18,13 @@ public class ComparisonFacade implements IComparisonFacade {
     @Autowired
     private ComparisonStrategyContext context;
 
+    @Autowired
+    private InterestPointsComparisonStrategy interestPointsComparisonStrategy;
+
     @Override
     public List<ComparsionDto> compareImages(final ImageDto referenceImage, final List<ImageDto> comparedImageList) {
         List<ComparsionDto> result = Lists.newArrayList();
-        context.setComparisonStrategy(new InterestPointsComparisonStrategy());
+        context.setComparisonStrategy(interestPointsComparisonStrategy);
         for (final ImageDto comparedImage : comparedImageList) {
             result.add(new ComparsionDto(referenceImage,
                     comparedImage,
