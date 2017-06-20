@@ -8,7 +8,7 @@ import boofcv.struct.image.GrayF32;
 import com.google.common.base.Preconditions;
 import georegression.struct.point.Point2D_F64;
 import org.ddogleg.struct.FastQueue;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,7 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Component
 public class InterestPointCalculator {
 
     private DetectDescribePoint detectDescribePoint;
