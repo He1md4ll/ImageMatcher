@@ -24,14 +24,16 @@ public class ComparisonFacade implements IComparisonFacade {
     @Override
     public List<ComparsionDto> compareImages(final ImageDto referenceImage, final List<ImageDto> comparedImageList) {
         List<ComparsionDto> result = Lists.newArrayList();
-        for (IComparisonStrategy comparisonStrategy : comparisonStrategyList) {
-            context.setComparisonStrategy(comparisonStrategy);
-            for (final ImageDto comparedImage : comparedImageList) {
-                result.add(new ComparsionDto(referenceImage,
-                        comparedImage,
-                        context.compare(ImageUtil.loadImage(referenceImage.getUrl()),
-                                ImageUtil.loadImage(comparedImage.getUrl()))));
+
+        for (final ImageDto comparedImage : comparedImageList) {
+            double score = 0.0d;
+            for (IComparisonStrategy comparisonStrategy : comparisonStrategyList) {
+                context.setComparisonStrategy(comparisonStrategy);
+                score += context.compare(ImageUtil.loadImage(referenceImage.getUrl()),
+                        ImageUtil.loadImage(comparedImage.getUrl())) * comparisonStrategy.getScoreWeight();
             }
+
+            result.add(new ComparsionDto(referenceImage, comparedImage,score));
         }
         return result;
     }

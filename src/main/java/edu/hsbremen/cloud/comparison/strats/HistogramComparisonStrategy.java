@@ -19,7 +19,22 @@ public class HistogramComparisonStrategy implements IComparisonStrategy {
         final double[] imageReferenceResult = histogramCalculator.calculate(imageReference);
         final double[] imageComparedResult = histogramCalculator.calculate(imageCompared);
 
-        // TODO: Find way to compare
-        return imageReferenceResult[0] / imageComparedResult[0];
+        return 1 - compare(imageReferenceResult, imageComparedResult);
+    }
+
+    @Override
+    public Double getScoreWeight() {
+        return 0.2;
+    }
+
+    private Double compare(double[] histReference,  double[] histCompared) {
+        double distanceC = 0.0D;
+        int length = Math.min(histReference.length, histCompared.length);
+
+        for(int j = 0; j < length; ++j) {
+            double d = histReference[j] - histCompared[j];
+            distanceC += d * d;
+        }
+        return distanceC / length;
     }
 }

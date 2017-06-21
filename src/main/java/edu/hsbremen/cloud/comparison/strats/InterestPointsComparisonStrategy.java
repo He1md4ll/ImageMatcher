@@ -43,4 +43,9 @@ public class InterestPointsComparisonStrategy implements IComparisonStrategy {
         associate.associate();
         return (double) associate.getMatches().getSize() / imageComparedDesc.getSize();
     }
+
+    @Override
+    public Double getScoreWeight() {
+        return 0.8;
+    }
 }

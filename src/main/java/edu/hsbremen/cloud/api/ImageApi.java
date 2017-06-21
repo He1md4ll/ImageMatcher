@@ -52,9 +52,9 @@ public class ImageApi {
         }
     }
 
-    @RequestMapping(value = "/compare/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/compare", method = RequestMethod.GET)
     public List<ComparsionDto> compareImage(@AuthenticationPrincipal UserEntity userEntity,
-                                            @PathVariable("name") String imageName) {
+                                            @RequestParam("name") String imageName) {
         // TODO: Add support for async non-blocking call (annotation vs DifferedResult vs Callable)
         return apiFacade.compare(imageName, userEntity);
     }
