@@ -20,31 +20,19 @@ import java.util.List;
 @Component
 public class CategoryCalculator {
 
-    private boolean initialized = Boolean.FALSE;
-    private ImageClassifier<Planar<GrayF32>> classifier;
-
-    public CategoryCalculator() {
-        try {
-            final ClassifierAndSource cs = FactoryImageClassifier.nin_imagenet(); // Test set 62.6% for 1000 categories
-            final File path = DeepBoofDataBaseOps.downloadModel(cs.getSource(), new File("download_data"));
-            classifier = cs.getClassifier();
-            classifier.loadModel(path);
-            initialized = Boolean.TRUE;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public List<ImageClassifier.Score> calculate(byte[] imageBytes) {
         try {
-            if (initialized) {
-                BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
-                Planar<GrayF32> image = new Planar<>(GrayF32.class, bufferedImage.getWidth(), bufferedImage.getHeight(), 3);
-                ConvertBufferedImage.convertFromMulti(bufferedImage, image, true, GrayF32.class);
-                classifier.classify(image);
-                return classifier.getAllResults();
-            }
-        } catch (Exception e) {
+            final ClassifierAndSource cs = FactoryImageClassifier.nin_imagenet();
+            final File modelFile = DeepBoofDataBaseOps.downloadModel(cs.getSource(), new File("download_data"));
+            ImageClassifier<Planar<GrayF32>> classifier = cs.getClassifier();
+            classifier.loadModel(modelFile);
+            BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
+            Planar<GrayF32> image = new Planar<>(GrayF32.class, bufferedImage.getWidth(), bufferedImage.getHeight(), 3);
+            ConvertBufferedImage.convertFromMulti(bufferedImage, image, true, GrayF32.class);
+            classifier.classify(image);
+            return classifier.getAllResults();
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return Lists.newArrayList();

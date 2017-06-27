@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HistogramComparisonStrategy implements IComparisonStrategy {
 
+    private static final int FACTOR = 50;
     private HistogramCalculator histogramCalculator;
 
     @Autowired
@@ -19,7 +20,7 @@ public class HistogramComparisonStrategy implements IComparisonStrategy {
         final double[] imageReferenceResult = histogramCalculator.calculate(imageReference);
         final double[] imageComparedResult = histogramCalculator.calculate(imageCompared);
 
-        return 1 - compare(imageReferenceResult, imageComparedResult);
+        return 1 - Math.min(1, compare(imageReferenceResult, imageComparedResult) * FACTOR);
     }
 
     @Override

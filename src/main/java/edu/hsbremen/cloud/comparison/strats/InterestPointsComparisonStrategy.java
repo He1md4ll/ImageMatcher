@@ -46,6 +46,6 @@ public class InterestPointsComparisonStrategy implements IComparisonStrategy {
 
     @Override
     public Double getScoreWeight() {
-        return 0.8;
+        return 0.4;
     }
 }
