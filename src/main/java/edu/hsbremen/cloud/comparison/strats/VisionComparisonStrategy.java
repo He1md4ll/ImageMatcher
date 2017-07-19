@@ -1,6 +1,6 @@
 package edu.hsbremen.cloud.comparison.strats;
 
-import edu.hsbremen.cloud.comparison.calc.VisionCalcualtor;
+import edu.hsbremen.cloud.comparison.calc.Calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,18 +9,18 @@ import java.util.List;
 @Component
 public class VisionComparisonStrategy implements IComparisonStrategy {
 
-    private VisionCalcualtor visionCalcualtor;
+    private Calculator<List<String>> calculator;
 
     @Autowired
-    public VisionComparisonStrategy(VisionCalcualtor visionCalcualtor) {
-        this.visionCalcualtor = visionCalcualtor;
+    public VisionComparisonStrategy(Calculator<List<String>> calculator) {
+        this.calculator = calculator;
     }
 
     @Override
     public Double compare(byte[] imageReference, byte[] imageCompared) {
         int matches = 0;
-        final List<String> tagsImageReference = visionCalcualtor.calculate(imageReference);
-        final List<String> tagsImageCompared = visionCalcualtor.calculate(imageCompared);
+        final List<String> tagsImageReference = calculator.calculate(imageReference);
+        final List<String> tagsImageCompared = calculator.calculate(imageCompared);
         for (String tagImageReference : tagsImageReference) {
             if(tagsImageCompared.stream().anyMatch(s -> s.equalsIgnoreCase(tagImageReference))) {
                 matches++;

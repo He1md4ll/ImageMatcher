@@ -8,6 +8,7 @@ import boofcv.struct.image.GrayF32;
 import com.google.common.base.Preconditions;
 import georegression.struct.point.Point2D_F64;
 import org.ddogleg.struct.FastQueue;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class InterestPointCalculator {
+public class InterestPointCalculator implements Calculator<FastQueue<TupleDesc>> {
 
     private DetectDescribePoint detectDescribePoint;
 
@@ -25,6 +26,7 @@ public class InterestPointCalculator {
         this.detectDescribePoint = detectDescribePoint;
     }
 
+    @Cacheable("interestPoints")
     public FastQueue<TupleDesc> calculate(byte[] imageBytes) {
         Preconditions.checkNotNull(detectDescribePoint);
         try {

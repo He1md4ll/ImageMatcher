@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.protobuf.ByteString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
-public class VisionCalcualtor {
+public class VisionCalcualtor implements Calculator<List<String>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VisionCalcualtor.class.getSimpleName());
     private ImageAnnotatorClient vision;
@@ -27,6 +28,7 @@ public class VisionCalcualtor {
         }
     }
 
+    @Cacheable("visions")
     public List<String> calculate(byte[] imageBytes) {
         List<String> result = Lists.newArrayList();
         if (vision != null) {

@@ -1,6 +1,6 @@
 package edu.hsbremen.cloud.comparison.strats;
 
-import edu.hsbremen.cloud.comparison.calc.HistogramCalculator;
+import edu.hsbremen.cloud.comparison.calc.Calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component;
 public class HistogramComparisonStrategy implements IComparisonStrategy {
 
     private static final int FACTOR = 50;
-    private HistogramCalculator histogramCalculator;
+    private Calculator<double[]> calculator;
 
     @Autowired
-    public HistogramComparisonStrategy(HistogramCalculator histogramCalculator) {
-        this.histogramCalculator = histogramCalculator;
+    public HistogramComparisonStrategy(Calculator<double[]> calculator) {
+        this.calculator = calculator;
     }
 
     @Override
     public Double compare(byte[] imageReference, byte[] imageCompared) {
-        final double[] imageReferenceResult = histogramCalculator.calculate(imageReference);
-        final double[] imageComparedResult = histogramCalculator.calculate(imageCompared);
+        final double[] imageReferenceResult = calculator.calculate(imageReference);
+        final double[] imageComparedResult = calculator.calculate(imageCompared);
 
         return 1 - Math.min(1, compare(imageReferenceResult, imageComparedResult) * FACTOR);
     }

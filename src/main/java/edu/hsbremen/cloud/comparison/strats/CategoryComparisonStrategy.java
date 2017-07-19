@@ -2,7 +2,7 @@ package edu.hsbremen.cloud.comparison.strats;
 
 import boofcv.abst.scene.ImageClassifier;
 import com.google.common.collect.Maps;
-import edu.hsbremen.cloud.comparison.calc.CategoryCalculator;
+import edu.hsbremen.cloud.comparison.calc.Calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,18 +13,18 @@ import java.util.Map;
 @Component
 public class CategoryComparisonStrategy implements IComparisonStrategy {
 
-    private CategoryCalculator categoryCalculator;
+    private Calculator<List<ImageClassifier.Score>> calculator;
 
     @Autowired
-    public CategoryComparisonStrategy(CategoryCalculator categoryCalculator) {
-        this.categoryCalculator = categoryCalculator;
+    public CategoryComparisonStrategy(Calculator<List<ImageClassifier.Score>> calculator) {
+        this.calculator = calculator;
     }
 
     @Override
     public Double compare(byte[] imageReference, byte[] imageCompared) {
         final Map<Integer, Double> comparedMap = Maps.newHashMap();
-        final List<ImageClassifier.Score> imageReferenceResults = categoryCalculator.calculate(imageReference);
-        final List<ImageClassifier.Score> imageComparedResults = categoryCalculator.calculate(imageCompared);
+        final List<ImageClassifier.Score> imageReferenceResults = calculator.calculate(imageReference);
+        final List<ImageClassifier.Score> imageComparedResults = calculator.calculate(imageCompared);
         imageReferenceResults.sort(new ImageCoreComperator());
         imageComparedResults.sort(new ImageCoreComperator());
         for (int i = 0; i < imageReferenceResults.size(); i++) {

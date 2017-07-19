@@ -7,6 +7,7 @@ import boofcv.alg.feature.color.Histogram_F64;
 import boofcv.io.image.ConvertBufferedImage;
 import boofcv.struct.image.GrayF32;
 import boofcv.struct.image.Planar;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -14,8 +15,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 
 @Component
-public class HistogramCalculator {
+public class HistogramCalculator implements Calculator<double[]> {
 
+    @Cacheable("histograms")
     public double[] calculate(byte[] imageBytes) {
         try {
             Planar<GrayF32> rgb = new Planar<>(GrayF32.class,1,1,3);
