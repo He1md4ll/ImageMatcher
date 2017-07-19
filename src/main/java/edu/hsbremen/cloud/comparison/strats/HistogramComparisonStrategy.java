@@ -25,7 +25,7 @@ public class HistogramComparisonStrategy implements IComparisonStrategy {
 
     @Override
     public Double getScoreWeight() {
-        return 0.2;
+        return 0.1;
     }
 
     private Double compare(double[] histReference,  double[] histCompared) {

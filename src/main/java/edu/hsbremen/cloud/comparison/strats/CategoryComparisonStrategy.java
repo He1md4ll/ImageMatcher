@@ -39,7 +39,7 @@ public class CategoryComparisonStrategy implements IComparisonStrategy {
 
     @Override
     public Double getScoreWeight() {
-        return 0.4d;
+        return 0.3;
     }
 
     private static class ImageCoreComperator implements Comparator<ImageClassifier.Score> {

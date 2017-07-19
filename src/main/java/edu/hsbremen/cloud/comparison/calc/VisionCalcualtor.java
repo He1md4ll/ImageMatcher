@@ -35,7 +35,7 @@ public class VisionCalcualtor {
             // Builds the image annotation request
             final List<AnnotateImageRequest> requests = Lists.newArrayList();
             final Image img = Image.newBuilder().setContent(imgBytes).build();
-            final Feature feat = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).build();
+            final Feature feat = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).setMaxResults(50).build();
             final AnnotateImageRequest request = AnnotateImageRequest.newBuilder()
                     .addFeatures(feat)
                     .setImage(img)

@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @Service
 public class UserService implements IUserService {
 
@@ -37,15 +35,5 @@ public class UserService implements IUserService {
 
     private UserEntity findUser(String username) {
         return userRepository.findByUsername(username);
-    }
-
-    @PostConstruct
-    public void init() {
-        // TODO: Remove add user
-        if (findUser("admin") == null) {
-            UserEntity adminEntity = UserEntity.fromRegisterUserDto(new RegisterUserDto("admin", "admin", "admin@admin.com"));
-            adminEntity.setAuthorities(Lists.newArrayList(RoleEntity.fromSecurityRole(SecurityConfig.Roles.ROLE_USER)));
-            userRepository.save(adminEntity);
-        }
     }
 }
