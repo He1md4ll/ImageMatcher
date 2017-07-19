@@ -32,6 +32,7 @@ public class VisionCalcualtor implements Calculator<List<String>> {
     public List<String> calculate(byte[] imageBytes) {
         List<String> result = Lists.newArrayList();
         if (vision != null) {
+            // TODO: It would be faster and cheaper to use bucket link to Google Cloud Storage instead of bytes
             ByteString imgBytes = ByteString.copyFrom(imageBytes);
 
             // Builds the image annotation request
